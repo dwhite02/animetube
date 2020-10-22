@@ -1,6 +1,5 @@
 function fecthData (max, part, q, type) {
-    return fetch('https://www.googleapis.com/youtube/v3/search?' + new URLSearchParams({
-        "key": key,
+    return fetch('/.netlify/functions/getContent?' + new URLSearchParams({
         "maxResults": max,
         "part": part,
         "q": q ,

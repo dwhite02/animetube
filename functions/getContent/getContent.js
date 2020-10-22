@@ -4,16 +4,12 @@ const qs = require('qs')
 exports.handler = async function (event) {
   // apply our function to the queryStringParameters and assign it to a variable
   const API_PARAMS = qs.stringify(event.queryStringParameters)
-  console.log('API_PARAMS', API_PARAMS)
   // Get env var values defined in our Netlify site UI
-
+  const token = process.env.API_KEY
   // TODO: customize your URL and API keys set in the Netlify Dashboard
   // this is secret too, your frontend won't see this
-  const { API_SECRET = 'shiba' } = process.env
-  const URL = `https://dog.ceo/api/breed/${API_SECRET}/images`
-
-  console.log('Constructed URL is ...', URL)
-
+  const URL = `https://www.googleapis.com/youtube/v3/search?key=${token}&${API_PARAMS}`
+  
   try {
     const { data } = await axios.get(URL)
     // refer to axios docs for other methods if you need them

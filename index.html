@@ -96,12 +96,12 @@
                             </div>
                         </li>
                     </ul>
-                    <div v-on:click="activeButton(event)" class="pagination pt-4 m-2">
+                    <div v-show="Object.keys(videos).length > 0" v-on:click="activeButton(event)" class="pagination pt-4 m-2">
                         <span v-on:click="changeSet(0)" class="active"></span>
                         <span v-on:click="changeSet(1)" ></span>
                         <span v-on:click="changeSet(2)" ></span>
                     </div>
-                    <div class="arrows">
+                    <div v-show="Object.keys(videos).length > 0" class="arrows">
                         <div class="mx-2 p-2 hidden arrow-l" v-on:click="arrowSlide(-1)">
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-left-short" fill="currentColor"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -128,7 +128,7 @@
                             <a v-bind:href="['https://youtube.com/playlist?list=' + playlist.id.playlistId]" target="_blank">
                                 <div class="bleach ">
                                     <div class="thumb">
-                                        <img v-bind:src="playlist.snippet.thumbnails.medium.url">
+                                        <img v-bind:src="playlist.snippet.thumbnails.high.url">
                                     </div>
                                     <div class="title ">
                                         <h2 class="p-3">{{playlist.snippet.title}}</h2>
@@ -160,7 +160,7 @@
             </section>
             <section id="inyuyasha">
                 <div class="section-title mx-2">
-                    <h1 class="text-white">My Hero Academia</h1>
+                    <h1 class="text-white">Top My Hero Academia Playlists</h1>
                 </div>
                 <div class="">
                     <ul class="video-container py-4 flex flex-wrap">
@@ -168,7 +168,7 @@
                             <a v-bind:href="['https://youtube.com/playlist?list=' + item.id.playlistId]" target="_blank">
                                 <div class="bleach ">
                                     <div class="thumb">
-                                        <img v-bind:src="item.snippet.thumbnails.medium.url">
+                                        <img v-bind:src="item.snippet.thumbnails.high.url">
                                     </div>
                                     <div class="title ">
                                         <h2 class="p-3">{{item.snippet.title}}</h2>
