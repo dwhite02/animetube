@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html class="" lang="en">
+<!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>AnimeTube</title>
+        <meta name="description" content="A site dedicated to top anime videos">
+        <meta name="Keywords" content="anime, videos, demon-slayer, bleach, inyuyasha, streaming">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="main.css">
+        <link rel="icon" href="images/fav-icon.svg" type="image/svg" sizes="16x16">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.8.10/tailwind.min.css" rel="stylesheet">
+
+        <!-- Twitter Card data -->
+        <meta name="twitter:card" content="">
+        <meta name="twitter:site" content="">
+        <meta name="twitter:title" content="AnimeTube">
+        <meta name="twitter:description" content="A site dedicated to top anime videos">
+        
+        <!-- Open Graph data -->
+        <meta property="og:title" content="AnimeTube" />
+        <meta property="og:type" content="music" />
+        <meta property="og:url" content="" />
+        <meta property="og:image" content="" />
+        <meta property="og:tag" content="" />
+        <meta property="og:description" content="A site dedicated to top anime videos" />
+        <meta property="og:site_name" content="animetube" />
+    </head>
+    <body>
+        <main id="main-content">
+            <section class=" m-0">
+                <div class="hero flex items-center">
+                    <img class="logo h-18 md:h-24 mx-auto" src="images/logo.svg">
+                </div>
+            </section>
+            <section class="search-container">
+                <div class="search-field w-11/12 md:w-3/5" style="margin:auto;">
+                    <input v-model="query" type="text" placeholder="Search.." name="search2">
+                    <button v-on:click="getAnime()" type="submit">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search mx-auto" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z" />
+                        <path fill-rule="evenodd"
+                            d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
+                        </svg>
+                    </button>
+                </div>
+                <div v-if="Object.keys(search).length > 0 " class="search-results">
+                    <div class="section-title mx-2">
+                        <h1 class="">Anime Results For : {{text}}</h1>
+                    </div>
+                    <div class="bar w-full h-2">
+
+                    </div>
+                    <div class="">
+                        <ul class="video-container py-4 flex flex-wrap">
+                            <!-- <li class="m-2 flex-1" v-for="video in videos" v-bind:data-video-id="video.id.videoId">
+                                                                <div class="corgi text-white " >
+                                                                    <img v-bind:src="video.snippet.thumbnails.high.url">
+                                                                </div>
+                                                            </li> -->
+                            <li class="video m-2 w-1/3 lg:w-1/6 flex-auto" v-for="video in search" v-bind:data-video-id="video.id.videoId" v-on:click="openModal(video.id.videoId)">
+                                    <div class="query-anime">
+                                        <div class="thumb">
+                                            <img v-bind:src="video.snippet.thumbnails.high.url">
+                                        </div>
+                                        <!-- <div class="title ">
+                                            <h2 class="text-white p-3">{{video.title}}</h2>
+                                        </div> -->
+                                    </div>
+                            </li>
+                        </ul>
+                    
+                    </div>
+                </div>
+            </section>
+            <section id="demon-slayer">
+                <div class="section-title mx-2">
+                    <h1 class="text-white">Top Demon Slayer Videos</h1>
+                </div>
+                <div class="video-pagination ">
+                    <ul class="video-container py-4 flex">
+                        <!-- <li class="m-2 flex-1" v-for="video in videos" v-bind:data-video-id="video.id.videoId">
+                            <div class="corgi text-white " >
+                                <img v-bind:src="video.snippet.thumbnails.high.url">
+                            </div>
+                        </li> -->
+                        <li class="video flex-auto" v-for="video in videos" v-bind:data-video-id="video.id.videoId" v-on:click="openModal(video.id.videoId)">
+                            <div class="demon  text-white ">
+                                <img v-bind:src="video.snippet.thumbnails.high.url">
+                                <div class="title ">
+                                    <h2 class="p-3">{{video.snippet.title}}</h2>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div v-on:click="activeButton(event)" class="pagination pt-4 m-2">
+                        <span v-on:click="changeSet(0)" class="active"></span>
+                        <span v-on:click="changeSet(1)" ></span>
+                        <span v-on:click="changeSet(2)" ></span>
+                    </div>
+                    <div class="arrows">
+                        <div class="mx-2 p-2 hidden arrow-l" v-on:click="arrowSlide(-1)">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-left-short" fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z" />
+                            </svg></div>
+                        <div class="mx-2 p-2  arrow-r" v-on:click="arrowSlide(1)">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-short" fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="bleach">
+                <div class="section-title mx-2">
+                    <h1 class="text-white">Top Bleach Playlists</h1>
+                </div>
+                <div class="">
+                    <ul class="video-container py-4 flex flex-wrap">
+                        <li class="video m-2 w-1/3 lg:w-1/6 flex-auto" v-for="playlist in playlists">
+                            <a v-bind:href="['https://youtube.com/playlist?list=' + playlist.id.playlistId]" target="_blank">
+                                <div class="bleach ">
+                                    <div class="thumb">
+                                        <img v-bind:src="playlist.snippet.thumbnails.medium.url">
+                                    </div>
+                                    <div class="title ">
+                                        <h2 class="p-3">{{playlist.snippet.title}}</h2>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    
+                </div>
+            </section>
+            <section id="feat-anime" class="flex m-auto mx-4">
+                <div class="w-3/5 flex-auto">
+                    <ul class="video-container py-4 ">
+                        <li class="feat video m-2 ">
+                            <div class="flex flex-col md:flex-row  ">
+                                <div class="title w-full lg:w-1/5 flex-auto p-4 mr-6 flex flex-col justify-center">
+                                    <h2 class="">{{feat.title}}</h2>
+                                    <p class=""> {{feat.desc}} </p>
+                                </div>
+                                <div class="thumb w-full lg:w-3/5 flex-auto " v-on:click="openModal(feat.id)">
+                                    <img v-bind:src="feat.img">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+            
+                </div>
+            </section>
+            <section id="inyuyasha">
+                <div class="section-title mx-2">
+                    <h1 class="text-white">My Hero Academia</h1>
+                </div>
+                <div class="">
+                    <ul class="video-container py-4 flex flex-wrap">
+                        <li class="video m-2 w-1/3 lg:w-1/6 flex-auto" v-for="item in playlists2">
+                            <a v-bind:href="['https://youtube.com/playlist?list=' + item.id.playlistId]" target="_blank">
+                                <div class="bleach ">
+                                    <div class="thumb">
+                                        <img v-bind:src="item.snippet.thumbnails.medium.url">
+                                    </div>
+                                    <div class="title ">
+                                        <h2 class="p-3">{{item.snippet.title}}</h2>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                
+                </div>
+            </section>
+            <div id="modal">
+                <div class="modal-inner">
+                    <div class="modal-player"></div>
+                    <button type="button" class="modal-close" aria-label="Close video modal"> x </button>
+                </div>
+            </div>
+        </main>
+        <footer class="text-center p-5" >
+            <div class="footer-container">
+                <p class="font-sans text-white text-xs"> © 2020 AnimeTube </p>
+            </div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+        <script src="app.js"></script>
+    </body>
+</html>
