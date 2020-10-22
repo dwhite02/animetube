@@ -1,5 +1,3 @@
-var key = 'AIzaSyDrSsrlQ8D9aro_hQEdOBGK0RmIWGkIVno';
-
 function fecthData (max, part, q, type) {
     return fetch('https://www.googleapis.com/youtube/v3/search?' + new URLSearchParams({
         "key": key,
